@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+  backend:
+    build: ./backend
+    ports:
+      - "5000:80"
+    environment:
+      - MYSQL_HOST=mysql
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=password
+      - MYSQL_DB=meat_delivery
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: meat_delivery
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:
